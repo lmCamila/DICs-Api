@@ -1,0 +1,11 @@
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\bin\Debug\netcoreapp2.2\DICs_API.deps.json
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\bin\Debug\netcoreapp2.2\DICs_API.runtimeconfig.json
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\bin\Debug\netcoreapp2.2\DICs_API.runtimeconfig.dev.json
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\bin\Debug\netcoreapp2.2\DICs_API.dll
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.csprojAssemblyReference.cache
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.csproj.CoreCompileInputs.cache
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.RazorAssemblyInfo.cache
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.RazorAssemblyInfo.cs
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.AssemblyInfoInputs.cache
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.AssemblyInfo.cs
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.RazorTargetAssemblyInfo.cache
