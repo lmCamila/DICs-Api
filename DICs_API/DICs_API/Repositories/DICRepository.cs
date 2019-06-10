@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DICs_API.Rerpositories
+namespace DICs_API.Repositories
 {
     public class DICRepository : AbstractRepository<DIC>
     {
