@@ -20,4 +20,19 @@ namespace DICs_API.Models
         public DateTime StartDate { get; set; }
         public DateTime FinishedDate { get; set; }
     }
+
+    public class DICUpload
+    {
+        public int Id { get; set; }
+        [Required]
+        public int IdUser { get; set; }
+        [Required]
+        public int IdStatus { get; set; }
+        [Required]
+        public int IdPeriod { get; set; }
+        [Required]
+        public string Description { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime FinishedDate { get; set; }
+    }
 }
