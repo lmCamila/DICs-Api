@@ -8,6 +8,6 @@ namespace DICs_API.Models
     public class Configuration
     {
         public int Id { get; set; }
-        public int IdPeriod { get; set; }
+        public Period Period { get; set; }
     }
 }
