@@ -17,10 +17,7 @@ namespace DICs_API.Models
         public Period Period { get; set; }
         [Required]
         public string Description { get; set; }
-        [Required]
         public DateTime StartDate { get; set; }
-        [Required]
-        public DateTime EndDate { get; set; }
         public DateTime FinishedDate { get; set; }
     }
 }

@@ -10,7 +10,6 @@ namespace DICs_API.Models
     {
 
         public int Id { get; set; }
-        [Required]
         public int IdPeriod { get; set; }
     }
 }
