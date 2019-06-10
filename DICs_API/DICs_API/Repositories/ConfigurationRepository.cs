@@ -75,7 +75,7 @@ namespace DICs_API.Repositories
                     db.Open();
                 }
                 string query = "INSERT INTO CONFIGURATION(ID_PERIOD) VALUES (@Period)";
-                var result = db.Execute(query, new { Period = item.IdPeriod });
+                var result = db.Execute(query, new { Period = item.Period });
                 db.Close();
                 return result > 0;
             }
@@ -91,7 +91,7 @@ namespace DICs_API.Repositories
                     db.Open();
                 }
                 string query = "UPDATE CONFIGURATION SET ID_PERIOD = @Period";
-                var result = db.Execute(query, new { Period = item.IdPeriod });
+                var result = db.Execute(query, new { Period = item.Period });
                 db.Close();
                 return result > 0;
             }
