@@ -13,7 +13,14 @@ namespace DICs_API.Models
         public string Note { get; set; }
         public DateTime Date { get; set; }
     }
-
+    public class DicHistoryUpload
+    {
+        public int Id { get; set; }
+        public int  IdDic { get; set; }
+        public int IdStatus { get; set; }
+        public string Note { get; set; }
+        public DateTime Date { get; set; }
+    }
     public class DicHistoryConfig
     {
         public DIC Dic { get; set; }
