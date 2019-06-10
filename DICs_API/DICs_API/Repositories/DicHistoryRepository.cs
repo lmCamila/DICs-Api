@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DICs_API.Rerpositories
+namespace DICs_API.Repositories
 {
     public class DicHistoryRepository : AbstractRepository<DicHistory>
     {
@@ -30,7 +30,7 @@ namespace DICs_API.Rerpositories
         {
             throw new Exception("Utilize o método GetAll pra obter os históricos passando como parametro o id");
         }
-        
+        //Get all com id user
         public IEnumerable<DicHistory>GetAll(int id)
         {
             using( IDbConnection db = new SqlConnection(ConnectionString))

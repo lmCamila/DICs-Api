@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DICs_API.Rerpositories
+namespace DICs_API.Repositories
 {
     public abstract class AbstractRepository<T>
     {
