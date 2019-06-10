@@ -9,3 +9,6 @@ C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netc
 C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.AssemblyInfoInputs.cache
 C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.AssemblyInfo.cs
 C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.RazorTargetAssemblyInfo.cache
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\bin\Debug\netcoreapp2.2\DICs_API.pdb
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.dll
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.pdb
