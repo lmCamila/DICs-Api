@@ -40,7 +40,7 @@ namespace DICs_API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Insert([FromBody]Configuration configuration)
+        public IActionResult Insert([FromBody]ConfigurationUpload configuration)
         {
             if (ModelState.IsValid)
             {
@@ -53,7 +53,7 @@ namespace DICs_API.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update ([Bind("Id, Period")]Configuration configuration)
+        public IActionResult Update ([Bind("Id, Period")]ConfigurationUpload configuration)
         {
             if (ModelState.IsValid)
             {

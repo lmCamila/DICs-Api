@@ -44,9 +44,17 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-
-                IEnumerable<Configuration> configurations = db.Query<Configuration>("SELECT * FROM CONFIGURATION");
-                return (List<Configuration>)configurations;
+                var query = db.Query<Configuration, Period, Configuration>
+                    (@"SELECT c.*, p.* 
+                       FROM CONFIGURATION c INNER JOIN PERIOD p
+                       ON c.ID_PERIOD = p.ID
+                       WHERE REMOVED = 0"
+                    , (c, p) => {
+                        c.Period = p;
+                        return c;
+                    }, null, splitOn: "id, id").AsList();
+                db.Close();
+                return (List<Configuration>)query;
             }
         }
 
@@ -59,13 +67,24 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                var configuration = db.QueryFirst<Configuration>("SELECT * FROM CONFIGURATION WHERE ID = IDENT_CURRENT('CONFIGURATION')");
+                var query = db.Query<Configuration, Period, Configuration>
+                    (@"SELECT c.*, p.* 
+                       FROM CONFIGURATION c INNER JOIN PERIOD p
+                       ON c.ID_PERIOD = p.ID
+                       WHERE ID = IDENT_CURRENT('CONFIGURATION')"
+                    , (c,p) => {
+                        c.Period = p;
+                        return c;
+                    }, null, splitOn: "id, id").AsList();
                 db.Close();
-                return configuration;
+                return query[0];
             }
         }
-
         public override bool Insert(Configuration item)
+        {
+            throw new Exception("Utilize o método que recebe como param um ConfigurationUpload.");
+        }
+        public bool Insert(ConfigurationUpload item)
         {
             using(IDbConnection db = new SqlConnection(ConnectionString))
             {
@@ -75,13 +94,16 @@ namespace DICs_API.Repositories
                     db.Open();
                 }
                 string query = "INSERT INTO CONFIGURATION(ID_PERIOD) VALUES (@Period)";
-                var result = db.Execute(query, new { Period = item.Period });
+                var result = db.Execute(query, new { Period = item.IdPeriod });
                 db.Close();
                 return result > 0;
             }
         }
-
         public override bool Update(Configuration item)
+        {
+            throw new Exception("Utilize o método que recebe como param um ConfigurationUpload.");
+        }
+        public bool Update(ConfigurationUpload item)
         {
             using(IDbConnection db = new SqlConnection(ConnectionString))
             {
@@ -91,7 +113,7 @@ namespace DICs_API.Repositories
                     db.Open();
                 }
                 string query = "UPDATE CONFIGURATION SET ID_PERIOD = @Period";
-                var result = db.Execute(query, new { Period = item.Period });
+                var result = db.Execute(query, new { Period = item.IdPeriod });
                 db.Close();
                 return result > 0;
             }

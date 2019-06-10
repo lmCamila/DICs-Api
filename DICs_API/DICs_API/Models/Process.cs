@@ -15,4 +15,12 @@ namespace DICs_API.Models
         public string Name { get; set; }
         public int Removed { get; set; }
     }
+
+    public class ProcessUpload
+    {
+        public int Id { get; set; }
+        public int IdDepartment { get; set; }
+        public string Name { get; set; }
+        public int Removed { get; set; }
+    }
 }
