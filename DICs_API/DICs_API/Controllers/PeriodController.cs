@@ -63,7 +63,7 @@ namespace DICs_API.Controllers
             {
                 var result = _repoPeriod.Insert(period);
                 var lastResult = result ? _repoPeriod.GetLastInserted() : null;
-                var uri = Url.Action("Get", new { Id = lastResult.Id, Version = "1.0" });
+                var uri = Url.Action("Get", new { Id = lastResult.Id });
                 return Created(uri, lastResult);
             }
             return BadRequest();

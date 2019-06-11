@@ -23,7 +23,7 @@ namespace DICs_API.Repositories
                     db.Open();
                 }
 
-                string query = "UPDATE DEPARTMENT SET REMOVED = 1 WHERE ID = @Id";
+                string query = "UPDATE DEPARTMENT SET REMOVED = 1 WHERE ID @Id";
                 var result = db.Execute(query, new { Id = id });
                 db.Close();
                 return (result > 0);
@@ -55,7 +55,7 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                IEnumerable<Department> departments = db.Query<Department>("SELECT * FROM DEPARTMENT WHERE REMOVED = 0");
+                IEnumerable<Department> departments = db.Query<Department>(@"SELECT * FROM DEPARTMENT WHERE REMOVED = 0");
                 return (List<Department>)departments;
             }
         }
@@ -99,7 +99,7 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                string query = "UPDATE DEPARTMENT SET NAME = @Name WHERE ID = @Id";
+                string query = "@UPDATE DEPARTMENT SET NAME = @Name";
                 var result = db.Execute(query, item);
                 db.Close();
                 return result > 0;

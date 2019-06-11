@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DICs_API.Repositories
 {
@@ -109,7 +111,7 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                int result = db.Execute("INSERT INTO PROCESS(NAME, ID_DEPARTMENT) VALUES (@Name, @IdDepartment)", item);
+                int result = db.Execute(@"INSERT INTO PROCESS(NAME, ID_DEPARTMENT) VALUES (@Name, @IdDepartment)", item);
                 return (result > 0);
             }
         }
@@ -128,7 +130,7 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                int result = db.Execute("UPDATE PROCESS SET NAME = @Name, ID_DEPARTMENT = @IdDepartment WHERE ID = @Id", item);
+                int result = db.Execute(@"UPDATE PROCESS SET NAME = @Name, ID_DEPARTMENT = @IdDepartment WHERE ID = @Id", item);
                 return (result > 0);
             }
 

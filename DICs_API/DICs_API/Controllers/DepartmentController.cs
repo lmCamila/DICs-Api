@@ -53,7 +53,7 @@ namespace DICs_API.Controllers
         }
 
         [HttpPost]
-        [SwaggerOperation(Summary = "Insere um empreendimento.",
+        [SwaggerOperation(Summary = "Recupera todos os empreendimentos.",
                           Tags = new[] { "Department" })]
         [ProducesResponseType(statusCode: 201, Type = typeof(Department))]
         [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
@@ -64,7 +64,7 @@ namespace DICs_API.Controllers
             {
                 var result = _repoDepartment.Insert(department);
                 var lastResult = result ? _repoDepartment.GetLastInserted() : null;
-                var uri = Url.Action("Get", new { Id = lastResult.Id, Version = "1.0" });
+                var uri = Url.Action("Get", new { Id = lastResult.Id });
                 return Created(uri, lastResult);
             }
             return BadRequest();
