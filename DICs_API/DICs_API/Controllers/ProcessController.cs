@@ -1,11 +1,10 @@
-﻿using DICs_API.Models;
+﻿using DICs_API.Errors;
+using DICs_API.Models;
 using DICs_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DICs_API.Controllers
 {
@@ -23,7 +22,13 @@ namespace DICs_API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get([FromRoute]int id)
+        [SwaggerOperation(Summary = "Recupera processo identificado pelo seu {id}.",
+                          Tags = new[] { "Process" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 200, Type = typeof(Process))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 404)]
+        public IActionResult Get([FromRoute][SwaggerParameter("Id do processo.")]int id)
         {
             var model = _repoProcess.Get(id);
             if(model == null)
@@ -35,6 +40,12 @@ namespace DICs_API.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(Summary = "Recupera Todos os processos.",
+                          Tags = new[] { "Process" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 200, Type = typeof(List<Process>))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 404)]
         public IActionResult GetAll()
         {
             var list = _repoProcess.GetAll();
@@ -42,6 +53,11 @@ namespace DICs_API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Exclui um processo.",
+                          Tags = new[] { "Process" })]
+        [ProducesResponseType(statusCode: 204)]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 404)]
         public IActionResult Delete([FromRoute]int id)
         {
             var process = _repoProcess.Get(id);
@@ -55,6 +71,11 @@ namespace DICs_API.Controllers
         }
 
         [HttpPut]
+        [SwaggerOperation(Summary = "Altera um processo.",
+                          Tags = new[] { "Process" })]
+        [ProducesResponseType(statusCode: 200)]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 400)]
         public IActionResult Update([Bind("Id, Name, IdDepartment")]ProcessUpload process)
         {
             if (ModelState.IsValid)
@@ -67,6 +88,11 @@ namespace DICs_API.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(Summary = "Insere um processo.",
+                          Tags = new[] { "Process" })]
+        [ProducesResponseType(statusCode: 201, Type = typeof(Process))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 400)]
         public IActionResult Insert([FromBody]ProcessUpload process)
         {
             if (ModelState.IsValid)
