@@ -1,7 +1,10 @@
-﻿using DICs_API.Models;
+﻿using DICs_API.Errors;
+using DICs_API.Models;
 using DICs_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Collections.Generic;
 
 namespace DICs_API.Controllers
 {
@@ -19,7 +22,13 @@ namespace DICs_API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get([FromRoute]int id)
+        [SwaggerOperation(Summary = "Recupera período identificado pelo seu {id}.",
+                          Tags = new[] { "Period" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 200, Type = typeof(Period))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 404)]
+        public IActionResult Get([FromRoute][SwaggerParameter("Id do periodo.")]int id)
         {
             var model = _repoPeriod.Get(id);
             if(model == null)
@@ -30,6 +39,12 @@ namespace DICs_API.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(Summary = "Recupera todos os períodos.",
+                          Tags = new[] { "Period" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 200, Type = typeof(List<Period>))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 404)]
         public IActionResult GetAll()
         {
             var list = _repoPeriod.GetAll();
@@ -37,6 +52,11 @@ namespace DICs_API.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(Summary = "Insere um período.",
+                          Tags = new[] { "Period" })]
+        [ProducesResponseType(statusCode: 201, Type = typeof(Period))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 400)]
         public IActionResult Insert([FromBody]Period period)
         {
             if (ModelState.IsValid)
@@ -50,6 +70,11 @@ namespace DICs_API.Controllers
         }
 
         [HttpDelete]
+        [SwaggerOperation(Summary = "Exclui um período.",
+                          Tags = new[] { "Period" })]
+        [ProducesResponseType(statusCode: 204)]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 404)]
         public IActionResult Delete([FromRoute]int id)
         {
             var period = _repoPeriod.Get(id);
@@ -63,6 +88,11 @@ namespace DICs_API.Controllers
         }
 
         [HttpPut]
+        [SwaggerOperation(Summary = "Altera um período.",
+                          Tags = new[] { "Period" })]
+        [ProducesResponseType(statusCode: 200)]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 400)]
         public IActionResult Update([Bind("Id, Months, Name")]Period period)
         {
             if (ModelState.IsValid)

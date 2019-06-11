@@ -1,7 +1,10 @@
-﻿using DICs_API.Models;
+﻿using DICs_API.Errors;
+using DICs_API.Models;
 using DICs_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Collections.Generic;
 
 namespace DICs_API.Controllers
 {
@@ -20,6 +23,12 @@ namespace DICs_API.Controllers
         }
 
         [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Recupera empreendimento identificado pelo seu {id}.",
+                          Tags = new[] { "Department" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 200, Type = typeof(Department))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 404)]
         public IActionResult Get([FromRoute]int id)
         {
             var model = _repoDepartment.Get(id);
@@ -31,6 +40,12 @@ namespace DICs_API.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(Summary = "Recupera todos os empreendimentos.",
+                          Tags = new[] { "Department" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 200, Type = typeof(List<Department>))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 404)]
         public IActionResult GetAll()
         {
             var list = _repoDepartment.GetAll();
@@ -38,6 +53,11 @@ namespace DICs_API.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(Summary = "Recupera todos os empreendimentos.",
+                          Tags = new[] { "Department" })]
+        [ProducesResponseType(statusCode: 201, Type = typeof(Department))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 400)]
         public IActionResult Insert([FromBody]Department department)
         {
             if (ModelState.IsValid)
@@ -51,6 +71,11 @@ namespace DICs_API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Exclui um empreendimento.",
+                          Tags = new[] { "Department" })]
+        [ProducesResponseType(statusCode: 204)]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 404)]
         public IActionResult Delete([FromRoute] int id)
         {
             var department = _repoDepartment.Get(id);
@@ -63,6 +88,11 @@ namespace DICs_API.Controllers
         }
 
         [HttpPut]
+        [SwaggerOperation(Summary = "Altera um empreendimento.",
+                          Tags = new[] { "Department" })]
+        [ProducesResponseType(statusCode: 200)]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 400)]
         public IActionResult Update([Bind("Id, Name")]Department department)
         {
             if (ModelState.IsValid)

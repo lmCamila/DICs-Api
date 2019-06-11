@@ -16,6 +16,7 @@ namespace DICs_API.Models
     public class ConfigurationUpload
     {
         public int Id { get; set; }
+        [Required]
         public int IdPeriod { get; set; }
     }
 }
