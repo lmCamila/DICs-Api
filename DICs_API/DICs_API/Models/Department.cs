@@ -11,7 +11,6 @@ namespace DICs_API.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        [Required]
         public int Removed { get; set; }
     }
 }

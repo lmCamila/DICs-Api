@@ -1,11 +1,9 @@
-﻿using DICs_API.Models;
+﻿using DICs_API.Errors;
+using DICs_API.Models;
 using DICs_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace DICs_API.Controllers
 {
@@ -22,6 +20,12 @@ namespace DICs_API.Controllers
         }
 
         [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Recupera configuração identificada pelo seu {id}.",
+                          Tags = new[] { "Configuration" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 200, Type = typeof(Configuration))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 404)]
         public IActionResult Get([FromRoute]int id)
         {
             var model = _repoConfiguration.Get(id);
@@ -33,6 +37,12 @@ namespace DICs_API.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(Summary = "Recupera todas as configurações.",
+                          Tags = new[] { "Configuration" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 200, Type = typeof(Configuration))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 404)]
         public IActionResult GetAll()
         {
             var list = _repoConfiguration.GetAll();
@@ -40,6 +50,11 @@ namespace DICs_API.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(Summary = "Insere uma configuração.",
+                          Tags = new[] { "Configuration" })]
+        [ProducesResponseType(statusCode: 201, Type = typeof(Configuration))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 400)]
         public IActionResult Insert([FromBody]ConfigurationUpload configuration)
         {
             if (ModelState.IsValid)
@@ -53,6 +68,11 @@ namespace DICs_API.Controllers
         }
 
         [HttpPut]
+        [SwaggerOperation(Summary = "Altera uma configuração.",
+                          Tags = new[] { "Configuration" })]
+        [ProducesResponseType(statusCode: 200)]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        [ProducesResponseType(statusCode: 400)]
         public IActionResult Update ([Bind("Id, Period")]ConfigurationUpload configuration)
         {
             if (ModelState.IsValid)
