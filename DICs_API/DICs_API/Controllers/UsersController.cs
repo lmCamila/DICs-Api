@@ -63,13 +63,13 @@ namespace DICs_API.Controllers
         [ProducesResponseType(statusCode: 201, Type = typeof(Users))]
         [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 400)]
-        public IActionResult Insert([FromBody]Users users)
+        public IActionResult Insert([Bind("Name, Avatar, Email, Department, Process, IsLeaderDepartment, IsLeaderProcess")]UsersUpload users)
         {
             if (ModelState.IsValid)
             {
                 var result = _repoUsers.Insert(users);
                 var lastResult = result ? _repoUsers.GetLastInserted() : null;
-                var uri = Url.Action("Get", new { Id = lastResult.Id });
+                var uri = Url.Action("Get", new { Id = lastResult.Id, Version = "1.0" });
                 return Created(uri, lastResult);
             }
             return BadRequest();
@@ -98,7 +98,7 @@ namespace DICs_API.Controllers
         [ProducesResponseType(statusCode: 200)]
         [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 400)]
-        public IActionResult Update([Bind("Id, Name, Avatar, Email, Department, Process, IsLeaderDepartment, IsLeaderProcess")]Users users)
+        public IActionResult Update([Bind("Id, Name, Avatar, Email, Department, Process, IsLeaderDepartment, IsLeaderProcess")]UsersUpload users)
         {
             if (ModelState.IsValid)
             {
