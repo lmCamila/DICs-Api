@@ -10,6 +10,12 @@ namespace DICs_API.Models
     {
 
         public int Id { get; set; }
+        public Period Period { get; set; }
+    }
+
+    public class ConfigurationUpload
+    {
+        public int Id { get; set; }
         public int IdPeriod { get; set; }
     }
 }
