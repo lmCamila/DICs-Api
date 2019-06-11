@@ -66,7 +66,7 @@ namespace DICs_API.Repositories
                 var query = db.Query<DicHistory, Status, DicHistory>(@"SELECT h.*, s.*
                                 FROM DIC_HISTORY h INNER JOIN DIC d ON h.ID_DIC = d.ID
                                 INNER JOIN STATUS s ON h.ID_STATUS_DIC = s.ID
-                                WHERE d.ID = IDENT_CURRENT('DIC_HISTORY')"
+                                WHERE h.ID = IDENT_CURRENT('DIC_HISTORY')"
                             , (h, s) =>
                             {
                                 h.StatusDic = s;
@@ -91,7 +91,7 @@ namespace DICs_API.Repositories
                     db.Open();
                 }
                 int result = db.Execute(@"INSERT INTO DIC_HISTORY(ID_DIC, NOTE, DATE, ID_STATUS_DIC, TYPE)
-                                          VALUES(@IdDic, @Note, GETDATE(), @IdStatusDic, @TypeDicHistory)", item);
+                                          VALUES(@IdDic, @Note, GETDATE(), @IdStatus, @Type)", item);
                 return (result > 0);
             }
         }

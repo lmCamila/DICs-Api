@@ -34,5 +34,19 @@ namespace DICs_API.Controllers
                 return NotFound();
             return Ok(model);
         }
+
+        [HttpPost]
+        public IActionResult Insert([Bind("IdDic,IdStatus,Note,Type")]DicHistoryUpload dic)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = _repoHistory.Insert(dic);
+                
+                var lastDic = _repoHistory.GetLastInserted();
+                var uri = Url.Action("Get", new { Id = lastDic.Id, Version = "1.0" });
+                return Created(uri, lastDic);
+            }
+            return BadRequest();
+        }
     }
 }

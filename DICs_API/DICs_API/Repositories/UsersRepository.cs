@@ -79,7 +79,7 @@ namespace DICs_API.Repositories
 
                 int result = db.Execute(@"INSERT INTO USERS 
                                             (NAME, AVATAR, EMAIL, PWD, ID_DEPARTMENT, ID_PROCESS, IS_LEADER_DEPARTMENT, IS_LEADER_PROCESS, REMOVED)
-		                                    VALUES(@Name, @Avatar, @Email, @IdDepartment, @IdProcess, @IsLeaderDepartment, @IsLeaderProcess, 0))",
+		                                    VALUES(@Name, @Avatar, @Email, 'aspas', @IdDepartment, @IdProcess, @IsLeaderDepartment, @IsLeaderProcess, 0)",
                                             new {
                                                 Name = item.Name,
                                                 Avatar = item.Avatar,

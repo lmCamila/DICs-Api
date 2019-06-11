@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DICs_API.Models;
 using DICs_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace DICs_API.Controllers
 {
@@ -39,5 +41,34 @@ namespace DICs_API.Controllers
             var list = _repoDIC.GetAll();
             return Ok(list);
         }
+
+        [HttpPost]
+        public IActionResult Insert([Bind("IdUser,IdStatus, IdPeriod,Description,FinishedDate")]DICUpload dic)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = _repoDIC.Insert(dic);
+                if (!result)
+                {
+                    return BadRequest();
+                }
+                var lastDic = _repoDIC.GetLastInserted();
+                var uri = Url.Action("Get", new { Id = lastDic.Id, Version = "1.0" });
+                return Created(uri, lastDic);
+            }
+            return BadRequest();
+        }
+
+        [HttpPut]
+        public IActionResult Update([Bind("Id,IdUser,IdStatus, IdPeriod,Description,FinishedDate")] DICUpload dic)
+        {
+            if (ModelState.IsValid)
+            {
+                _repoDIC.Update(dic);
+                return Ok();
+            }
+            return BadRequest();
+        }
+
     }
 }

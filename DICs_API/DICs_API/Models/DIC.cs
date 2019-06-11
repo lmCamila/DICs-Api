@@ -8,7 +8,7 @@ namespace DICs_API.Models
 {
     public class DIC
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         [Required]
         public Users User { get; set; }
         [Required]

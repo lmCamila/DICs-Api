@@ -133,9 +133,10 @@ namespace DICs_API.Repositories
         {
             throw new Exception("Utize o método que recebe como param um DICUpload.");
         }
-
+        
         public bool Update(DICUpload item)
         {
+            Console.WriteLine(item.FinishedDate);
             using (IDbConnection db = new SqlConnection(ConnectionString))
             {
                 Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
@@ -143,11 +144,23 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                int result = db.Execute(@"UPDATE DIC SET 	
+                int result = 0;
+                if (DateTime.Compare(item.FinishedDate, DateTime.MinValue) > 0 &&
+                   DateTime.Compare(item.FinishedDate, DateTime.MaxValue) < 0)
+                {
+                    result = db.Execute(@"UPDATE DIC SET 	
                                         DESCRIPTION = @Description,
 				                        FINISHED_DATE = @FinishedDate,
 				                        ID_STATUS = @IdStatus 
                                         WHERE ID = @Id ", item);
+                } else
+                {
+                    result = db.Execute(@"UPDATE DIC SET 	
+                                        DESCRIPTION = @Description,
+				                        ID_STATUS = @IdStatus 
+                                        WHERE ID = @Id ", item);
+                }
+                    
                 return (result > 0);
             }
         }
