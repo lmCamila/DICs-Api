@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,16 +13,19 @@ namespace DICs_API.Models
         public Status StatusDic { get; set; }
         public string Note { get; set; }
         public DateTime Date { get; set; }
-        public string TypeDicHistory { get; set; }
+        public string Type { get; set; }
     }
     public class DicHistoryUpload
     {
         public int Id { get; set; }
+        [Required]
         public int  IdDic { get; set; }
+        [Required]
         public int IdStatus { get; set; }
         public string Note { get; set; }
         public DateTime Date { get; set; }
-        public string TypeDicHistory { get; set; }
+        [Required]
+        public string Type { get; set; }
     }
     public class DicHistoryConfig
     {
