@@ -54,7 +54,7 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                IEnumerable<Period> periods = db.Query<Period>(@"SELECT * FROM PERIOD WHERE REMOVED = 0");
+                IEnumerable<Period> periods = db.Query<Period>("SELECT * FROM PERIOD WHERE REMOVED = 0");
                 return ((List<Period>)periods);
             }
         }
@@ -98,7 +98,7 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                string query = "@UPDATE PERIOD SET MONTHS = @Months, NAME = @Name, WHERE ID = @Id";
+                string query = "UPDATE PERIOD SET MONTHS = @Months, NAME = @Name WHERE ID = @Id";
                 var result = db.Execute(query, item);
                 db.Close();
                 return result > 0;

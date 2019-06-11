@@ -112,8 +112,8 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                string query = "UPDATE CONFIGURATION SET ID_PERIOD = @Period";
-                var result = db.Execute(query, new { Period = item.IdPeriod });
+                string query = "UPDATE CONFIGURATION SET ID_PERIOD = @Period WHERE ID = @Id";
+                var result = db.Execute(query, new { Period = item.IdPeriod, Id = item.Id });
                 db.Close();
                 return result > 0;
             }

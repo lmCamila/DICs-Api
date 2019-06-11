@@ -111,7 +111,7 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                int result = db.Execute(@"INSERT INTO PROCESS(NAME, ID_DEPARTMENT) VALUES (@Name, @IdDepartment)", item);
+                int result = db.Execute("INSERT INTO PROCESS(NAME, ID_DEPARTMENT) VALUES (@Name, @IdDepartment)", item);
                 return (result > 0);
             }
         }
@@ -130,7 +130,7 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                int result = db.Execute(@"UPDATE PROCESS SET NAME = @Name, ID_DEPARTMENT = @IdDepartment WHERE ID = @Id", item);
+                int result = db.Execute("UPDATE PROCESS SET NAME = @Name, ID_DEPARTMENT = @IdDepartment WHERE ID = @Id", item);
                 return (result > 0);
             }
 
