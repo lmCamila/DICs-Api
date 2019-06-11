@@ -90,8 +90,8 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                int result = db.Execute(@"INSERT INTO DIC_HISTORY(ID_DIC, NOTE, DATE, ID_STATUS_DIC)
-                                          VALUES(@IdDic, @Note, GETDATE(), @IdStatusDic)", item);
+                int result = db.Execute(@"INSERT INTO DIC_HISTORY(ID_DIC, NOTE, DATE, ID_STATUS_DIC, TYPE)
+                                          VALUES(@IdDic, @Note, GETDATE(), @IdStatusDic, @TypeDicHistory)", item);
                 return (result > 0);
             }
         }
