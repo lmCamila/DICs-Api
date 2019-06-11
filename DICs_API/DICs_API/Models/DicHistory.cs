@@ -12,6 +12,7 @@ namespace DICs_API.Models
         public Status StatusDic { get; set; }
         public string Note { get; set; }
         public DateTime Date { get; set; }
+        public string TypeDicHistory { get; set; }
     }
     public class DicHistoryUpload
     {
@@ -20,6 +21,7 @@ namespace DICs_API.Models
         public int IdStatus { get; set; }
         public string Note { get; set; }
         public DateTime Date { get; set; }
+        public string TypeDicHistory { get; set; }
     }
     public class DicHistoryConfig
     {
