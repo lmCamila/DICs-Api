@@ -13,6 +13,6 @@ namespace DICs_API.Models
         public int Months { get; set; }
         [Required]
         public string Name { get; set; }
-        public int Removed { get; set; }
+        public byte Removed { get; set; }
     }
 }

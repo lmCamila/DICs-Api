@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace DICs_API.Models
 {
@@ -13,9 +15,9 @@ namespace DICs_API.Models
         [Required]
         public Department Department { get; set; }
         public Process Process { get; set; }
-        public int IsLeaderDepartment { get; set; }
-        public int IsLeaderProcess { get; set; }
-        public int Removed { get; set; }
+        public byte IsLeaderDepartment { get; set; }
+        public byte IsLeaderProcess { get; set; }
+        public byte Removed { get; set; }
     }
 
     public class UsersUpload
@@ -32,5 +34,21 @@ namespace DICs_API.Models
         public int IsLeaderDepartment { get; set; }
         public int IsLeaderProcess { get; set; }
         public int Removed { get; set; }
+    }
+    public class UserDics
+    {
+        public Users User { get; set; }
+        public List<DIC> Dics { get; set; }
+    }
+    public static class UserDicsExtensions
+    {
+        public static UserDics ToUserDics(this IEnumerable<DIC> dics, Users user)
+        {
+            return new UserDics
+            {
+                User = user,
+                Dics = dics.ToList()
+            };
+        }
     }
 }

@@ -20,9 +20,11 @@ namespace DICs_API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UsersRepository _repoUsers;
+        private readonly DICRepository _repoDIC;
         public UsersController(IConfiguration configuration)
         {
             _repoUsers = new UsersRepository(configuration);
+            _repoDIC = new DICRepository(configuration);
         }
 
         [HttpGet("{id}")]
@@ -40,6 +42,21 @@ namespace DICs_API.Controllers
                 return NotFound();
             }
 
+            return Ok(model);
+        }
+
+        [HttpGet("dics/{id}")]
+        [SwaggerOperation(Summary = "Recupera Usuário e seus DICs identificado pelo id do usuário {id}.",
+                          Tags = new[] { "Users" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 200, Type = typeof(UserDics))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404)]
+        public IActionResult GetDics(int id)
+        {
+            var model = _repoDIC.GetAllForUser(id).Select(l => l).ToUserDics(_repoUsers.Get(id));
+            if (model == null)
+                return NotFound();
             return Ok(model);
         }
 

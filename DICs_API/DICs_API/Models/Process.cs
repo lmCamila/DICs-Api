@@ -13,7 +13,7 @@ namespace DICs_API.Models
         public Department Department { get; set; }
         [Required]
         public string Name { get; set; }
-        public int Removed { get; set; }
+        public byte Removed { get; set; }
     }
 
     public class ProcessUpload
@@ -23,6 +23,6 @@ namespace DICs_API.Models
         public int IdDepartment { get; set; }
         [Required]
         public string Name { get; set; }
-        public int Removed { get; set; }
+        public byte Removed { get; set; }
     }
 }

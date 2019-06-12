@@ -30,7 +30,8 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                var query = db.Query<DIC, Users, Status, Period, Department, Process, DIC>(@"SELECT d.*, u.*, s.*, p.*, dep.*, pro.* 
+                var query = db.Query<DIC, Users, Status, Period, Department, Process, DIC>(@"
+                          SELECT d.*,IS_LATE = dbo.IS_LATE(d.FINISHED_DATE, d.START_DATE, p.MONTHS) , u.*, s.*, p.*, dep.*, pro.* 
                           FROM DIC d INNER JOIN USERS u ON d.ID_USER = U.ID 
 			                        INNER JOIN STATUS s ON d.ID_STATUS = s.ID 
                                     INNER JOIN PERIOD p ON d.ID_PERIOD = p.ID
@@ -50,6 +51,65 @@ namespace DICs_API.Repositories
             }
         }
 
+        public IEnumerable<DIC> GetAllForUser(int idUser)
+        {
+            using (IDbConnection db = new SqlConnection(ConnectionString))
+            {
+                Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                }
+                var query = db.Query<DIC, Users, Status, Period, Department, Process, DIC>(@"
+                          SELECT d.*,IS_LATE = dbo.IS_LATE(d.FINISHED_DATE, d.START_DATE, p.MONTHS) , u.*, s.*, p.*, dep.*, pro.* 
+                          FROM DIC d INNER JOIN USERS u ON d.ID_USER = U.ID 
+			                        INNER JOIN STATUS s ON d.ID_STATUS = s.ID 
+                                    INNER JOIN PERIOD p ON d.ID_PERIOD = p.ID
+			                        INNER JOIN DEPARTMENT dep ON u.ID_DEPARTMENT = dep.ID
+			                        INNER JOIN PROCESS pro ON u.ID_PROCESS = pro.ID
+                         WHERE u.ID = @IdUser"
+                , (d, u, s, p, dep, pro) =>
+                {
+                    d.User = u;
+                    d.User.Department = dep;
+                    d.User.Process = pro;
+                    d.Status = s;
+                    d.Period = p;
+                    return d;
+                }, new { IdUser = idUser }, splitOn: "id, id, id, id").AsList();
+                return query;
+            }
+        }
+
+        public IEnumerable<DIC> GetAllForProcess(int idUser)
+        {
+            using (IDbConnection db = new SqlConnection(ConnectionString))
+            {
+                Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                }
+                var query = db.Query<DIC, Users, Status, Period, Department, Process, DIC>(@"
+                          SELECT d.*,IS_LATE = dbo.IS_LATE(d.FINISHED_DATE, d.START_DATE, p.MONTHS) , u.*, s.*, p.*, dep.*, pro.* 
+                          FROM DIC d INNER JOIN USERS u ON d.ID_USER = U.ID 
+			                        INNER JOIN STATUS s ON d.ID_STATUS = s.ID 
+                                    INNER JOIN PERIOD p ON d.ID_PERIOD = p.ID
+			                        INNER JOIN DEPARTMENT dep ON u.ID_DEPARTMENT = dep.ID
+			                        INNER JOIN PROCESS pro ON u.ID_PROCESS = pro.ID
+                         WHERE u.ID = @IdUser"
+                , (d, u, s, p, dep, pro) =>
+                {
+                    d.User = u;
+                    d.User.Department = dep;
+                    d.User.Process = pro;
+                    d.Status = s;
+                    d.Period = p;
+                    return d;
+                }, new { IdUser = idUser }, splitOn: "id, id, id, id").AsList();
+                return query;
+            }
+        }
         public override IEnumerable<DIC> GetAll()
         {
             using (IDbConnection db = new SqlConnection(ConnectionString))
@@ -59,7 +119,8 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                var query = db.Query<DIC, Users, Status, Period, Department, Process, DIC>(@"SELECT d.*, u.*, s.*, p.*, dep.*, pro.* 
+                var query = db.Query<DIC, Users, Status, Period, Department, Process, DIC>(@"
+                          SELECT d.*,IS_LATE = dbo.IS_LATE(d.FINISHED_DATE, d.START_DATE, p.MONTHS) , u.*, s.*, p.*, dep.*, pro.* 
                           FROM DIC d INNER JOIN USERS u ON d.ID_USER = U.ID 
 			                        INNER JOIN STATUS s ON d.ID_STATUS = s.ID 
                                     INNER JOIN PERIOD p ON d.ID_PERIOD = p.ID
@@ -88,7 +149,7 @@ namespace DICs_API.Repositories
                     db.Open();
                 }
                 var query = db.Query<DIC, Users, Status, Period, Department, Process, DIC>(@"
-                            SELECT d.*, u.*, s.*, p.*, dep.*, pro.* 
+                            SELECT d.*,IS_LATE = dbo.IS_LATE(d.FINISHED_DATE, d.START_DATE, p.MONTHS) , u.*, s.*, p.*, dep.*, pro.*
                             FROM DIC d INNER JOIN USERS u ON d.ID_USER = U.ID 
 			                     INNER JOIN STATUS s ON d.ID_STATUS = s.ID 
                                  INNER JOIN PERIOD p ON d.ID_PERIOD = p.ID
