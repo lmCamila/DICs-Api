@@ -19,6 +19,7 @@ namespace DICs_API.Models
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime FinishedDate { get; set; }
+        public byte IsLate { get; set; }
     }
 
     public class DICUpload
@@ -34,5 +35,6 @@ namespace DICs_API.Models
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime FinishedDate { get; set; }
+        public byte IsLate { get; set; }
     }
 }
