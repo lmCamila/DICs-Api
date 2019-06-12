@@ -13,4 +13,23 @@ namespace DICs_API.Models
         public string Name { get; set; }
         public byte Removed { get; set; }
     }
+
+    public class DepartmentDics
+    {
+        public Department Department { get; set; }
+        public List<DIC> Dics { get; set; }
+    }
+
+    public static class DepartmentDicsExtensions
+    {
+        public static DepartmentDics ToDepartmentDics(this IEnumerable<DIC> dics, Department dep)
+        {
+            return new DepartmentDics
+            {
+                Department = dep,
+                Dics = dics.ToList()
+            };
+        }
+    }
+
 }
