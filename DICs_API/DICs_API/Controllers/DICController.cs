@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DICs_API.Filters;
 using DICs_API.Models;
 using DICs_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -36,9 +37,9 @@ namespace DICs_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] DicFilter filter)
         {
-            var list = _repoDIC.GetAll();
+            var list = _repoDIC.GetAll().AsQueryable<DIC>().FilterDic(filter);
             return Ok(list);
         }
 
