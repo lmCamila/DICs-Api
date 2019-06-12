@@ -15,7 +15,7 @@ namespace DICs_API.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/v{version:apiVersion}/status")]
     public class StatusController : ControllerBase
     {
         private readonly StatusRepository _repoStatus;
