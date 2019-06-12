@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DICs_API.Controllers
 {
@@ -16,9 +17,11 @@ namespace DICs_API.Controllers
     public class ProcessController : ControllerBase
     {
         private readonly ProcessRepository _repoProcess;
+        private readonly DICRepository _repoDIC;
         public ProcessController(IConfiguration configuration)
         {
             _repoProcess = new ProcessRepository(configuration);
+            _repoDIC = new DICRepository(configuration);
         }
 
         [HttpGet("{id}")]
@@ -36,6 +39,21 @@ namespace DICs_API.Controllers
                 return NotFound();
             }
 
+            return Ok(model);
+        }
+
+        [HttpGet("dics/{id}")]
+        [SwaggerOperation(Summary = "Recupera Processo e os DICs de seus colaboradores identificado pelo id do processo {id}.",
+                          Tags = new[] { "Process" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 200, Type = typeof(ProcessDics))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 404)]
+        public IActionResult GetDics(int id)
+        {
+            var model = _repoDIC.GetAllForProcess(id).Select(l => l).ToProccessDic(_repoProcess.Get(id));
+            if (model == null)
+                return NotFound();
             return Ok(model);
         }
 

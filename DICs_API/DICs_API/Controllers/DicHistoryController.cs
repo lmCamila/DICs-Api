@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DICs_API.Errors;
 using DICs_API.Models;
 using DICs_API.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace DICs_API.Controllers
 {
@@ -27,6 +29,12 @@ namespace DICs_API.Controllers
         }
 
         [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Pega todos históricos de um DIC identificado pelo id do dic {id}.",
+                          Tags = new[] { "DicHistory" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 200, Type = typeof(DicHistoryConfig))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 400)]
         public IActionResult Get([FromRoute] int id)
         {
             var model = _repoHistory.GetAll(id).Select(l => l).ToDicHistoryConfig(_repoDic.Get(id));
@@ -36,6 +44,12 @@ namespace DICs_API.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(Summary = "Insere um novo histórico para o DIC..",
+                          Tags = new[] { "DicHistory" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 201, Type = typeof(DicHistory))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 400)]
         public IActionResult Insert([Bind("IdDic,IdStatus,Note,Type")]DicHistoryUpload dic)
         {
             if (ModelState.IsValid)
