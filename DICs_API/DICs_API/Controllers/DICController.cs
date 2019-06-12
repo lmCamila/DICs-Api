@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DICs_API.Errors;
+using DICs_API.Filters;
 using DICs_API.Models;
 using DICs_API.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -50,9 +51,9 @@ namespace DICs_API.Controllers
         [ProducesResponseType(statusCode: 200, Type = typeof(List<DIC>))]
         [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 404)]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery]DicFilter filter)
         {
-            var list = _repoDIC.GetAll();
+            var list = _repoDIC.GetAll().AsQueryable<DIC>().FilterDic(filter);
             return Ok(list);
         }
 
