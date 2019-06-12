@@ -98,8 +98,8 @@ namespace DICs_API.Controllers
             if (ModelState.IsValid)
             {
                 var result = _repoProcess.Insert(process);
-                var lastResult = result ? _repoProcess.GetLastInserted() : null;
-                var uri = Url.Action("Get", new { Id = lastResult.Id });
+                var lastResult = _repoProcess.GetLastInserted();
+                var uri = Url.Action("Get", new { Id = lastResult.Id, Version = "1.0" });
                 return Created(uri, lastResult);
             }
             return BadRequest();
