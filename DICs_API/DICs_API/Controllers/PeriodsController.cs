@@ -12,12 +12,12 @@ namespace DICs_API.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
-    [Route("api/v{version:apiVersion}/periods")]
-    public class PeriodController : ControllerBase
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class PeriodsController : ControllerBase
     {
         private readonly PeriodRepository _repoPeriod;
 
-        public PeriodController(IConfiguration configuration) {
+        public PeriodsController(IConfiguration configuration) {
             _repoPeriod = new PeriodRepository(configuration);
         }
 

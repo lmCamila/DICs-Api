@@ -13,13 +13,13 @@ namespace DICs_API.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
-    [Route("api/v{version:apiVersion}/departments")]
-    public class DepartmentController : ControllerBase
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class DepartmentsController : ControllerBase
     {
         private readonly DepartmentRepository _repoDepartment;
         private readonly DICRepository _repoDIC;
 
-        public DepartmentController(IConfiguration configuration)
+        public DepartmentsController(IConfiguration configuration)
         {
             _repoDepartment = new DepartmentRepository(configuration);
             _repoDIC = new DICRepository(configuration);

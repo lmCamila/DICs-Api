@@ -13,12 +13,12 @@ namespace DICs_API.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
-    [Route("api/v{version:apiVersion}/processes")]
-    public class ProcessController : ControllerBase
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class ProcessesController : ControllerBase
     {
         private readonly ProcessRepository _repoProcess;
         private readonly DICRepository _repoDIC;
-        public ProcessController(IConfiguration configuration)
+        public ProcessesController(IConfiguration configuration)
         {
             _repoProcess = new ProcessRepository(configuration);
             _repoDIC = new DICRepository(configuration);

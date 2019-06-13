@@ -11,11 +11,11 @@ namespace DICs_API.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
-    [Route("api/v{version:apiVersion}/configurations")]
-    public class ConfigurationController : ControllerBase
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class ConfigurationsController : ControllerBase
     {
         private readonly ConfigurationRepository _repoConfiguration;
-        public ConfigurationController(IConfiguration configuration){
+        public ConfigurationsController(IConfiguration configuration){
             _repoConfiguration = new ConfigurationRepository(configuration);
         }
 

@@ -25,7 +25,7 @@ namespace DICs_API.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
-    [Route("api/v{version:apiVersion}/users")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly UsersRepository _repoUsers;

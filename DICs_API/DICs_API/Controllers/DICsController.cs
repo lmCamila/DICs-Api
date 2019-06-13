@@ -17,11 +17,11 @@ namespace DICs_API.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [ApiExplorerSettings(GroupName = "v1")]
-    [Route("api/v{version:apiVersion}/dics")]
-    public class DICController : ControllerBase
+    [Route("api/v{version:apiVersion}/[controller]")]
+    public class DICsController : ControllerBase
     {
         private readonly DICRepository _repoDIC;
-        public DICController(IConfiguration configuration)
+        public DICsController(IConfiguration configuration)
         {
             _repoDIC = new DICRepository(configuration);
         }
