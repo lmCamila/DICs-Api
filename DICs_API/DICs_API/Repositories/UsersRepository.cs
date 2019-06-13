@@ -67,7 +67,7 @@ namespace DICs_API.Repositories
             throw new Exception("Utilize o método que recebe como parâmetro o UsersUpload");
         }
 
-        public bool Insert(UsersUpload item)
+        public bool Insert(UsersDto item)
         {
             using (IDbConnection db = new SqlConnection(ConnectionString))
             {
@@ -77,9 +77,9 @@ namespace DICs_API.Repositories
                     db.Open();
                 }
 
-                int result = db.Execute(@"INSERT INTO USERS 
-                                            (NAME, AVATAR, EMAIL, PWD, ID_DEPARTMENT, ID_PROCESS, IS_LEADER_DEPARTMENT, IS_LEADER_PROCESS, REMOVED)
-		                                    VALUES(@Name, @Avatar, @Email, 'aspas', @IdDepartment, @IdProcess, @IsLeaderDepartment, @IsLeaderProcess, 0)",
+                int result = db.Execute(@"INSERT INTO USERS(NAME, AVATAR, EMAIL, ID_DEPARTMENT, ID_PROCESS, IS_LEADER_DEPARTMENT,
+                                                IS_LEADER_PROCESS, REMOVED,PASSWORD_HASH,PASSWORD_SALT)
+		                                VALUES(@Name, @Avatar, @Email, @IdDepartment, @IdProcess, @IsLeaderDepartment, @IsLeaderProcess, 0,@PassHash, @PassSalt)",
                                             new {
                                                 Name = item.Name,
                                                 Avatar = item.Avatar,
@@ -87,7 +87,9 @@ namespace DICs_API.Repositories
                                                 IdDepartment = item.Department,
                                                 IdProcess = item.Process,
                                                 IsLeaderDepartment = item.IsLeaderDepartment,
-                                                IsLeaderProcess = item.IsLeaderProcess
+                                                IsLeaderProcess = item.IsLeaderProcess,
+                                                PassHash = item.PasswordHash,
+                                                PassSalt = item.PasswordSalt
                                             }
                 );
                 return (result > 0);
@@ -100,6 +102,24 @@ namespace DICs_API.Repositories
             throw new Exception("Utilize o método que recebe como parâmetro o UsersUpload");
         }
 
+        public UsersDto GetForAuth(string email)
+        {
+            using (IDbConnection db = new SqlConnection(ConnectionString))
+            {
+                Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                }
+                var result = db.QuerySingleOrDefault<UsersDto>(@"SELECT u.*, d.*, p.* FROM users u 
+                                  INNER JOIN DEPARTMENT d ON u.ID_DEPARTMENT = d.id
+							      INNER JOIN PROCESS p ON u.ID_PROCESS = p.id
+					  		        WHERE u.REMOVED = 0 AND u.EMAIL = @Email",
+                                             new{ Email = email });
+                return result;
+            }
+
+        }
         public bool Update(UsersUpload item)
         {
             using (IDbConnection db = new SqlConnection(ConnectionString))

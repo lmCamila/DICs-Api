@@ -31,6 +31,7 @@ namespace DICs_API.Models
         [Required]
         public int Department { get; set; }
         public int Process { get; set; }
+        public string Password { get; set; }
         public int IsLeaderDepartment { get; set; }
         public int IsLeaderProcess { get; set; }
         public int Removed { get; set; }
@@ -48,6 +49,43 @@ namespace DICs_API.Models
             {
                 User = user,
                 Dics = dics.ToList()
+            };
+        }
+    }
+
+    public class UsersDto
+    {
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+        public string Avatar { get; set; }
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public int Department { get; set; }
+        public int Process { get; set; }
+        public int IsLeaderDepartment { get; set; }
+        public int IsLeaderProcess { get; set; }
+        public int Removed { get; set; }
+        public string PasswordHash { get; set; }
+        public string PasswordSalt { get; set; }
+    }
+
+    public static class UserDtoExtensions
+    {
+        public static UsersDto ToUserDto(this UsersUpload user)
+        {
+            return new UsersDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Avatar = user.Avatar,
+                Email = user.Email,
+                Department = user.Department,
+                Process = user.Process,
+                IsLeaderDepartment = user.IsLeaderDepartment,
+                IsLeaderProcess = user.IsLeaderProcess,
+                Removed = user.Removed
             };
         }
     }

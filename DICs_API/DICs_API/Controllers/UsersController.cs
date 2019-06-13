@@ -1,17 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using DICs_API.Errors;
+using DICs_API.Helpers;
 using DICs_API.Models;
 using DICs_API.Repositories;
+using DICs_API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace DICs_API.Controllers
 {
+    [Authorize("JwtBearer")]
     [Produces("application/json")]
     [ApiController]
     [ApiVersion("1.0")]
@@ -21,10 +30,14 @@ namespace DICs_API.Controllers
     {
         private readonly UsersRepository _repoUsers;
         private readonly DICRepository _repoDIC;
-        public UsersController(IConfiguration configuration)
+        private readonly IUserService _service;
+        private readonly AppSettings _appSettings;
+        public UsersController(IConfiguration configuration, IOptions<AppSettings> appSettings, IUserService userService)
         {
             _repoUsers = new UsersRepository(configuration);
             _repoDIC = new DICRepository(configuration);
+            _service = userService;
+            _appSettings = appSettings.Value;
         }
 
         [HttpGet("{id}")]
@@ -73,24 +86,72 @@ namespace DICs_API.Controllers
             return Ok(list);
         }
 
+
+        [AllowAnonymous]
         [HttpPost]
-        [SwaggerOperation(Summary = "Insere um novo usuário..",
-                          Tags = new[] { "Users" },
-                          Produces = new[] { "application/json" })]
-        [ProducesResponseType(statusCode: 201, Type = typeof(Users))]
-        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
-        [ProducesResponseType(statusCode: 400)]
-        public IActionResult Insert([Bind("Name, Avatar, Email, Department, Process, IsLeaderDepartment, IsLeaderProcess")]UsersUpload users)
+        public IActionResult Insert([FromBody] UsersUpload user)
         {
             if (ModelState.IsValid)
             {
-                var result = _repoUsers.Insert(users);
-                var lastResult = result ? _repoUsers.GetLastInserted() : null;
+                var result = _service.Create(user);
+                if (!result)
+                {
+                    return BadRequest();
+                }
+                var lastResult = _repoUsers.GetLastInserted();
                 var uri = Url.Action("Get", new { Id = lastResult.Id, Version = "1.0" });
                 return Created(uri, lastResult);
             }
             return BadRequest();
+            
         }
+
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody] UsersUpload user)
+        {
+            var service = _service.Authenticate(user.Email, user.Password);
+            if (user == null)
+                return BadRequest(new { message = "Email ou senha incorretos" });
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            // return basic user info (without password) and token to store client side
+            return Ok(new
+            {
+                Token = tokenString
+            });
+        }
+
+        //[HttpPost]
+        //[SwaggerOperation(Summary = "Insere um novo usuário..",
+        //                  Tags = new[] { "Users" },
+        //                  Produces = new[] { "application/json" })]
+        //[ProducesResponseType(statusCode: 201, Type = typeof(Users))]
+        //[ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
+        //[ProducesResponseType(statusCode: 400)]
+        //public IActionResult Insert([Bind("Name, Avatar, Email, Department, Process, IsLeaderDepartment, IsLeaderProcess")]UsersUpload users)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = _repoUsers.Insert(users);
+        //        var lastResult = result ? _repoUsers.GetLastInserted() : null;
+        //        var uri = Url.Action("Get", new { Id = lastResult.Id, Version = "1.0" });
+        //        return Created(uri, lastResult);
+        //    }
+        //    return BadRequest();
+        //}
 
         [HttpDelete("{id}")]
         [SwaggerOperation(Summary = "Exclui um usuário.",
