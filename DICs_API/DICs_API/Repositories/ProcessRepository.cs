@@ -88,7 +88,7 @@ namespace DICs_API.Repositories
                     (@"SELECT p.*, d.* 
                         FROM PROCESS p INNER JOIN DEPARTMENT d 
                         ON p.ID_DEPARTMENT = d.id 
-                        WHERE d.ID = IDENT_CURRENT('PROCESS')"
+                        WHERE p.ID = IDENT_CURRENT('PROCESS')"
                 , (p, d) =>
                 {
                     p.Department = d;
