@@ -57,6 +57,13 @@ namespace DICs_API
                c.SwaggerDoc("v1", new Info { Title = "Documentação API DICs", Version = "1.0" });
                c.EnableAnnotations();
                c.DocumentFilter<TagDescriptionDocumentFilter>();
+               c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+               {
+                   Name = "Authorization",
+                   In = "header",
+                   Type = "apiKey",
+                   Description = "Autenticação Bearer via JWT"
+               });
            });
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
