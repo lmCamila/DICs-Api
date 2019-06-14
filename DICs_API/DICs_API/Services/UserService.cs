@@ -15,11 +15,11 @@ namespace DICs_API.Services
 {
     public interface IUserService
     {
-        UsersDto Authenticate(string username, string password);
+        Users Authenticate(string username, string password);
         IEnumerable<Users> GetAll();
         Users GetById(int id);
         bool Create(UsersUpload user);
-        void Update(Users user, string password = null);
+        bool Update(UsersUpload user);
         void Delete(int id);
     }
 
@@ -34,7 +34,7 @@ namespace DICs_API.Services
             _repoUsers = new UsersRepository(configuration);
         }
 
-        public UsersDto Authenticate(string useremail, string password)
+        public Users Authenticate(string useremail, string password)
         {
             if (string.IsNullOrEmpty(useremail) || string.IsNullOrEmpty(password))
                 return null;
@@ -45,7 +45,7 @@ namespace DICs_API.Services
             var bytesSalt = System.Convert.FromBase64String(user.PasswordSalt);
             if (!VerifyPasswordHash(password, bytesHash, bytesSalt))
                 return null;
-            return user;
+            return _repoUsers.Get(user.Id);
         }
 
         public bool Create(UsersUpload user)
@@ -80,9 +80,23 @@ namespace DICs_API.Services
             return _repoUsers.Get(id);
         }
 
-        public void Update(Users user, string password = null)
+        public bool Update(UsersUpload user)
         {
-            throw new NotImplementedException();
+            bool result;
+            if (string.IsNullOrWhiteSpace(user.Password))
+            {
+                result = _repoUsers.Update(user);
+                return result;
+            }
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHash(user.Password, out passwordHash, out passwordSalt);
+            var userDto = user.ToUserDto();
+            userDto.PasswordHash = System.Convert.ToBase64String(passwordHash);
+            userDto.PasswordSalt = System.Convert.ToBase64String(passwordSalt);
+
+            result = _repoUsers.Update(userDto);
+
+            return result;
         }
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {

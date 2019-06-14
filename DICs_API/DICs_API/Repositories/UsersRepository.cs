@@ -27,7 +27,7 @@ namespace DICs_API.Repositories
                 }
                 var query = db.Query<Users, Department, Process, Users>(@"SELECT u.*, d.*, p.* FROM users u 
                                   INNER JOIN DEPARTMENT d ON u.ID_DEPARTMENT = d.id
-							      INNER JOIN PROCESS p ON u.ID_PROCESS = p.id
+							      LEFT JOIN PROCESS p ON u.ID_PROCESS = p.id
 					  		WHERE u.id = @Id AND u.REMOVED = 0"
                 , (u, d, p) =>
                 {
@@ -50,7 +50,7 @@ namespace DICs_API.Repositories
                 }
                 var query = db.Query<Users, Department, Process, Users>(@"SELECT u.*, d.*, p.* FROM users u 
                                   INNER JOIN DEPARTMENT d ON u.ID_DEPARTMENT = d.id
-							      INNER JOIN PROCESS p ON u.ID_PROCESS = p.id
+							      LEFT JOIN PROCESS p ON u.ID_PROCESS = p.id
 					  		WHERE u.REMOVED = 0"
                 , (u, d, p) =>
                 {
@@ -113,7 +113,7 @@ namespace DICs_API.Repositories
                 }
                 var result = db.QuerySingleOrDefault<UsersDto>(@"SELECT u.*, d.*, p.* FROM users u 
                                   INNER JOIN DEPARTMENT d ON u.ID_DEPARTMENT = d.id
-							      INNER JOIN PROCESS p ON u.ID_PROCESS = p.id
+							      LEFT JOIN PROCESS p ON u.ID_PROCESS = p.id
 					  		        WHERE u.REMOVED = 0 AND u.EMAIL = @Email",
                                              new{ Email = email });
                 return result;
@@ -129,30 +129,56 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                int result = db.Execute(@"UPDATE USERS SET NAME = @Name,
+                int result;
+                if(item.Process == 0)
+                {
+                     result = db.Execute(@"UPDATE USERS SET NAME = @Name,
 		                                     AVATAR = @Avatar,
 				                             EMAIL = @Email,
-				                             ID_DEPARTMENT = @IdDepartment,
-				                             ID_PROCESS = @IdProcess,
+				                             ID_DEPARTMENT = @Department,
+				                             ID_PROCESS = null,
 				                             IS_LEADER_DEPARTMENT = @IsLeaderDepartment,
 				                             IS_LEADER_PROCESS = @IsLeaderProcess
-				                             WHERE ID = @Id",
-                                             new
-                                             {
-                                                 Name = item.Name,
-                                                 Avatar = item.Avatar,
-                                                 Email = item.Email,
-                                                 IdDepartment = item.Department,
-                                                 IdProcess = item.Process,
-                                                 IsLeaderDepartment = item.IsLeaderDepartment,
-                                                 IsLeaderProcess = item.IsLeaderProcess,
-                                                 Id = item.Id
-                                             }
+				                             WHERE ID = @Id", item
                 );
+                }
+                else
+                {
+                    result = db.Execute(@"UPDATE USERS SET NAME = @Name,
+		                                     AVATAR = @Avatar,
+				                             EMAIL = @Email,
+				                             ID_DEPARTMENT = @Department,
+				                             ID_PROCESS = @Process,
+				                             IS_LEADER_DEPARTMENT = @IsLeaderDepartment,
+				                             IS_LEADER_PROCESS = @IsLeaderProcess
+				                             WHERE ID = @Id", item
+                );
+                }
                 return (result > 0);
             }
         }
-
+        public bool Update(UsersDto user)
+        {
+            using(IDbConnection db = new SqlConnection(ConnectionString))
+            {
+                Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                }
+                int result = db.Execute(@"UPDATE USERS SET NAME = @Name,
+		                                     AVATAR = @Avatar,
+				                             EMAIL = @Email,
+				                             ID_DEPARTMENT = @Department,
+				                             ID_PROCESS = @Process,
+				                             IS_LEADER_DEPARTMENT = @IsLeaderDepartment,
+				                             IS_LEADER_PROCESS = @IsLeaderProcess,
+                                             PASSWORD_HASH = @PasswordHash,
+                                             PASSWORD_SALT = @PasswordSalt
+				                             WHERE ID = @Id", user);
+                return (result > 0);
+        }
+    }
         public override bool Delete(int id)
         {
             using (IDbConnection db = new SqlConnection(ConnectionString))
@@ -179,7 +205,7 @@ namespace DICs_API.Repositories
                 }
                 var query = db.Query<Users, Department, Process, Users>(@"SELECT u.*, d.*, p.* FROM users u 
                                   INNER JOIN DEPARTMENT d ON u.ID_DEPARTMENT = d.id
-							      INNER JOIN PROCESS p ON u.ID_PROCESS = p.id
+							      LEFT JOIN PROCESS p ON u.ID_PROCESS = p.id
 					  		WHERE u.id = IDENT_CURRENT('USERS') AND u.REMOVED = 0"
                 , (u, d, p) =>
                 {

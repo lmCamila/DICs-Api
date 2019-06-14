@@ -41,17 +41,6 @@ namespace DICs_API.Models
         public Users User { get; set; }
         public List<DIC> Dics { get; set; }
     }
-    public static class UserDicsExtensions
-    {
-        public static UserDics ToUserDics(this IEnumerable<DIC> dics, Users user)
-        {
-            return new UserDics
-            {
-                User = user,
-                Dics = dics.ToList()
-            };
-        }
-    }
 
     public class UsersDto
     {
@@ -69,6 +58,22 @@ namespace DICs_API.Models
         public int Removed { get; set; }
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
+    }
+    public class Login
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+    public static class UserDicsExtensions
+    {
+        public static UserDics ToUserDics(this IEnumerable<DIC> dics, Users user)
+        {
+            return new UserDics
+            {
+                User = user,
+                Dics = dics.ToList()
+            };
+        }
     }
 
     public static class UserDtoExtensions

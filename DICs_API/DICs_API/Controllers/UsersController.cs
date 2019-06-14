@@ -89,6 +89,12 @@ namespace DICs_API.Controllers
 
         [AllowAnonymous]
         [HttpPost]
+        [SwaggerOperation(Summary = "Insere um novo usuário..",
+                          Tags = new[] { "Users" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 201, Type = typeof(Users))]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 400)]
         public IActionResult Insert([FromBody] UsersUpload user)
         {
             if (ModelState.IsValid)
@@ -108,10 +114,16 @@ namespace DICs_API.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] UsersUpload user)
+        [SwaggerOperation(Summary = "Faz autenticação do usuário e retorna um Bearer Token.",
+                          Tags = new[] { "Users" },
+                          Produces = new[] { "application/json" })]
+        [ProducesResponseType(statusCode: 201)]
+        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
+        [ProducesResponseType(statusCode: 400)]
+        public IActionResult Authenticate([FromBody] Login login)
         {
-            var service = _service.Authenticate(user.Email, user.Password);
-            if (user == null)
+            var service = _service.Authenticate(login.Email, login.Password);
+            if (service == null)
                 return BadRequest(new { message = "Email ou senha incorretos" });
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -119,7 +131,7 @@ namespace DICs_API.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, service.Id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -133,25 +145,6 @@ namespace DICs_API.Controllers
                 Token = tokenString
             });
         }
-
-        //[HttpPost]
-        //[SwaggerOperation(Summary = "Insere um novo usuário..",
-        //                  Tags = new[] { "Users" },
-        //                  Produces = new[] { "application/json" })]
-        //[ProducesResponseType(statusCode: 201, Type = typeof(Users))]
-        //[ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
-        //[ProducesResponseType(statusCode: 400)]
-        //public IActionResult Insert([Bind("Name, Avatar, Email, Department, Process, IsLeaderDepartment, IsLeaderProcess")]UsersUpload users)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = _repoUsers.Insert(users);
-        //        var lastResult = result ? _repoUsers.GetLastInserted() : null;
-        //        var uri = Url.Action("Get", new { Id = lastResult.Id, Version = "1.0" });
-        //        return Created(uri, lastResult);
-        //    }
-        //    return BadRequest();
-        //}
 
         [HttpDelete("{id}")]
         [SwaggerOperation(Summary = "Exclui um usuário.",
@@ -176,11 +169,15 @@ namespace DICs_API.Controllers
         [ProducesResponseType(statusCode: 200)]
         [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 400)]
-        public IActionResult Update([Bind("Id, Name, Avatar, Email, Department, Process, IsLeaderDepartment, IsLeaderProcess")]UsersUpload users)
+        public IActionResult Update([Bind("Id, Name, Avatar, Email, Department, Process, Password, IsLeaderDepartment, IsLeaderProcess")]UsersUpload user)
         {
             if (ModelState.IsValid)
             {
-                _repoUsers.Update(users);
+                var result = _service.Update(user);
+
+                if (!result)
+                    return BadRequest();
+
                 return Ok();
             }
 
