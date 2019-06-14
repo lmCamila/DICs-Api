@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using DICs_API.Errors;
 using DICs_API.Models;
 using DICs_API.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace DICs_API.Controllers
 {
+    [Authorize("JwtBearer")]
     [Produces("application/json")]
     [ApiController]
     [ApiVersion("1.0")]
