@@ -84,7 +84,7 @@ namespace DICs_API.Controllers
 
         [HttpPut]
         [SwaggerOperation(Summary = "Altera um DIC.",
-                          Tags = new[] { "Dics" })]
+                          Tags = new[] { "DICs" })]
         [ProducesResponseType(statusCode: 200)]
         [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponse))]
         [ProducesResponseType(statusCode: 400)]
