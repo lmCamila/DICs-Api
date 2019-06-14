@@ -8,8 +8,13 @@ namespace DICs_API.Models
 {
     public class Configuration
     {
-
+        /// <summary>
+        /// Id da configuração
+        /// </summary>
         public int Id { get; set; }
+        /// <summary>
+        /// Id do período
+        /// </summary>
         public Period Period { get; set; }
     }
 

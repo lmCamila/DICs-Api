@@ -64,6 +64,7 @@ namespace DICs_API
                    Type = "apiKey",
                    Description = "Autenticação Bearer via JWT"
                });
+               c.IncludeXmlComments($@"{AppDomain.CurrentDomain.BaseDirectory}\SwaggerConfig.xml");
            });
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
