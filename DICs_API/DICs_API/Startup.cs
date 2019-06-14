@@ -57,6 +57,7 @@ namespace DICs_API
                c.SwaggerDoc("v1", new Info { Title = "Documentação API DICs", Version = "1.0" });
                c.EnableAnnotations();
                c.DocumentFilter<TagDescriptionDocumentFilter>();
+               c.IncludeXmlComments($@"{AppDomain.CurrentDomain.BaseDirectory}\SwaggerConfig.xml");
            });
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");

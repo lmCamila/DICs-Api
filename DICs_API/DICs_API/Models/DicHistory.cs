@@ -7,12 +7,29 @@ using System.Threading.Tasks;
 namespace DICs_API.Models
 {
     public class DicHistory
-    {
+    {   /// <summary>
+        /// Id do Histórico do  Dic
+        /// </summary>
         public int Id { get; set; }
+        /// <summary>
+        /// Id do Dic referente
+        /// </summary>
         public int IdDic { get; set; }
+        /// <summary>
+        /// Status do Dic
+        /// </summary>
         public Status StatusDic { get; set; }
+        /// <summary>
+        /// observação sobre alteração
+        /// </summary>
         public string Note { get; set; }
+        /// <summary>
+        /// Data da alteração
+        /// </summary>
         public DateTime Date { get; set; }
+        /// <summary>
+        /// tipo de alteração
+        /// </summary>
         public string Type { get; set; }
     }
     public class DicHistoryUpload
