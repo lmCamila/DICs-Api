@@ -55,3 +55,9 @@ C:\Users\tamyres\Desktop\Desafios\Nova pasta\Dics\DICs_API\DICs_API\obj\Debug\ne
 C:\Users\tamyres\Desktop\Desafios\Nova pasta\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.RazorTargetAssemblyInfo.cache
 C:\Users\tamyres\Desktop\Desafios\Nova pasta\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.dll
 C:\Users\tamyres\Desktop\Desafios\Nova pasta\Dics\DICs_API\DICs_API\obj\Debug\netcoreapp2.2\DICs_API.pdb
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\bin\netcoreapp2.2\DICs_API.deps.json
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\bin\netcoreapp2.2\DICs_API.runtimeconfig.json
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\bin\netcoreapp2.2\DICs_API.runtimeconfig.dev.json
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\bin\netcoreapp2.2\DICs_API.dll
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\bin\netcoreapp2.2\DICs_API.pdb
+C:\Users\camila.lima\Desktop\Desafio final\Dics\DICs_API\DICs_API\bin\netcoreapp2.2\SwaggerConfig.xml

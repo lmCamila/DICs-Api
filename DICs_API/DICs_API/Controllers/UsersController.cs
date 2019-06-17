@@ -142,7 +142,8 @@ namespace DICs_API.Controllers
             // return basic user info (without password) and token to store client side
             return Ok(new
             {
-                Token = tokenString
+                Token = tokenString,
+                User = service
             });
         }
 
