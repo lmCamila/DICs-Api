@@ -17,6 +17,7 @@ namespace DICs_API.Models
         public Process Process { get; set; }
         public byte IsLeaderDepartment { get; set; }
         public byte IsLeaderProcess { get; set; }
+        public int IsAdmin { get; set; }
         public byte Removed { get; set; }
     }
 
@@ -34,6 +35,7 @@ namespace DICs_API.Models
         public string Password { get; set; }
         public int IsLeaderDepartment { get; set; }
         public int IsLeaderProcess { get; set; }
+        public int IsAdmin { get; set; }
         public int Removed { get; set; }
     }
     public class UserDics
@@ -55,6 +57,7 @@ namespace DICs_API.Models
         public int Process { get; set; }
         public int IsLeaderDepartment { get; set; }
         public int IsLeaderProcess { get; set; }
+        public int IsAdmin { get; set; }
         public int Removed { get; set; }
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
@@ -90,6 +93,7 @@ namespace DICs_API.Models
                 Process = user.Process,
                 IsLeaderDepartment = user.IsLeaderDepartment,
                 IsLeaderProcess = user.IsLeaderProcess,
+                IsAdmin = user.IsAdmin,
                 Removed = user.Removed
             };
         }
