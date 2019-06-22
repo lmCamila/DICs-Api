@@ -111,12 +111,14 @@ namespace DICs_API.Repositories
                 {
                     db.Open();
                 }
-                var result = db.QuerySingleOrDefault<UsersDto>(@"SELECT u.*, d.*, p.* FROM users u 
-                                  INNER JOIN DEPARTMENT d ON u.ID_DEPARTMENT = d.id
-							      LEFT JOIN PROCESS p ON u.ID_PROCESS = p.id
-					  		        WHERE u.REMOVED = 0 AND u.EMAIL = @Email",
-                                             new{ Email = email });
-                return result;
+                var result = db.Query<UsersDto>(@"SELECT u.ID,u.NAME,u.AVATAR,u.EMAIL, d.id as 'department', p.ID as 'process',
+	                                            u.IS_LEADER_DEPARTMENT,u.IS_LEADER_PROCESS, u.IS_ADMIN, u.PASSWORD_HASH, u.PASSWORD_SALT 
+                                                FROM users u 
+                                                    INNER JOIN DEPARTMENT d ON u.ID_DEPARTMENT = d.id
+							                        LEFT JOIN PROCESS p ON u.ID_PROCESS = p.id
+					  		                    WHERE u.REMOVED = 0 AND u.EMAIL = @Email",
+                                             new{ Email = email }).AsList();
+                return result[0];
             }
 
         }
