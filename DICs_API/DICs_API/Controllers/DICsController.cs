@@ -46,6 +46,7 @@ namespace DICs_API.Controllers
             return Ok(model);
         }
 
+
         [HttpGet]
         [SwaggerOperation(Summary = "Recupera todos DICs.",
                           Tags = new[] { "DICs" },

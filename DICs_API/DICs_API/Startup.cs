@@ -40,6 +40,9 @@ namespace DICs_API
                 options.Filters.Add(typeof(ErrorResponseFilter));
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            //add politica de cors que permite que a api seja acessada de qualquer origem
+            services.AddCors();
+
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
@@ -97,6 +100,7 @@ namespace DICs_API
                     .AddAuthenticationSchemes("JwtBearer")
                     .RequireAuthenticatedUser().Build());
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -111,6 +115,8 @@ namespace DICs_API
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+             //add politica de cors que permite que a api seja acessada de qualquer origem
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseHttpsRedirection();
             app.UseMvc();
