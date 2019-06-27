@@ -51,23 +51,23 @@ namespace DICs_API.Controllers
             return Ok(list);
         }
 
-        [HttpPost]
-        [SwaggerOperation(Summary = "Insere uma configuração.",
-                          Tags = new[] { "Configuration" })]
-        [ProducesResponseType(statusCode: 201, Type = typeof(Configuration))]
-        [ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
-        [ProducesResponseType(statusCode: 400)]
-        public IActionResult Insert([FromBody]ConfigurationUpload configuration)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = _repoConfiguration.Insert(configuration);
-                var lastResult =  _repoConfiguration.GetLastInserted();
-                var uri = Url.Action("Get", new { Id = lastResult.Id, Version = "1.0" });
-                return Created(uri, lastResult);
-            }
-            return BadRequest();
-        }
+        //[HttpPost]
+        //[SwaggerOperation(Summary = "Insere uma configuração.",
+        //                  Tags = new[] { "Configuration" })]
+        //[ProducesResponseType(statusCode: 201, Type = typeof(Configuration))]
+        //[ProducesResponseType(statusCode: 500, Type = typeof(ErrorResponseFilter))]
+        //[ProducesResponseType(statusCode: 400)]
+        //public IActionResult Insert([FromBody]ConfigurationUpload configuration)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = _repoConfiguration.Insert(configuration);
+        //        var lastResult =  _repoConfiguration.GetLastInserted();
+        //        var uri = Url.Action("Get", new { Id = lastResult.Id, Version = "1.0" });
+        //        return Created(uri, lastResult);
+        //    }
+        //    return BadRequest();
+        //}
 
         [HttpPut]
         [SwaggerOperation(Summary = "Altera uma configuração.",

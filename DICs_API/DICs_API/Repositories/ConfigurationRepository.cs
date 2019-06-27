@@ -28,10 +28,18 @@ namespace DICs_API.Repositories
                     db.Open();
                 }
 
-                string query = "SELECT * FROM CONFIGURATION WHERE ID = @Id";
-                var configuration = db.QueryFirst<Configuration>(query, new { Id = id });
+                var configuration = db.Query<Configuration, Period, Configuration>(@"SELECT c.*, p.* 
+                                FROM CONFIGURATION c
+                                    INNER JOIN PERIOD p ON c.ID_PERIOD = p.ID
+                                WHERE c.ID = @id",
+                (c, p)=> {
+                    c.Period = p;
+                    return c;
+                }, new { Id = id },splitOn:"id, id").AsList();
+
                 db.Close();
-                return configuration;
+
+                return configuration[0];
             }
         }
 
